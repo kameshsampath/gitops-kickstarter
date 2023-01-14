@@ -2,7 +2,7 @@ destination:
   server: https://kubernetes.default.svc
 source:
   # When forked updated to your fork
-  repoURL: https://github.com/kameshsampath/go-hello-world-gitops.git
+  repoURL: https://github.com/kameshsampath/go-helloworld-gitops.git
   # the branch to use
   targetRevision: main
 argocd:

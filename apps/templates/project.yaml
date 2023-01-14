@@ -14,7 +14,7 @@ spec:
   sourceRepos:
   - '*'
 
-  # Only permit applications to deploy to the guestbook namespace in the same cluster
+  # Only permit applications to deploy only to the following namespaces in the same cluster
   destinations:
   - namespace: default
     server: {{ .Values.destination.server }}
@@ -23,6 +23,8 @@ spec:
   - namespace: demo-apps
     server: {{ .Values.destination.server }}
   - namespace: argocd
+    server: {{ .Values.destination.server }}
+  - namespace: cosign-system
     server: {{ .Values.destination.server }}
 
   # Deny all cluster-scoped resources from being created, except for Namespace
@@ -59,6 +61,8 @@ spec:
     kind: PersistentVolumeClaim
   - group: ""
     kind: ServiceAccount
+  - group: "policy.sigstore.dev/v1beta1"
+    kind: ClusterImagePolicy
 
   # Enables namespace orphaned resource monitoring.
   orphanedResources:

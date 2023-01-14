@@ -1,37 +1,30 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argocd-image-updater
+  name: sigstore-policy-controller
   namespace: argocd
   # Add this finalizer ONLY if you want these to cascade delete.
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
-    name: argocd-image-updater
+    name: sigstore-policy-controller
 spec:
   project: gitops-demo
   source:
 
     # Using the Charts Repo
     repoURL: https://argoproj.github.io/argo-helm
-    targetRevision: {{ .Values.argocd.imageUpdater.version }} 
-    chart: argocd-image-updater  
+    chart: policy-controller
 
     helm:
-      releaseName: argocd-image-updater
-      values: |
-        config:
-          logLevel: {{ .Values.argocd.imageUpdater.logLevel }}
-          {{- with .Values.argocd.imageUpdater.registries }}
-          registries:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
+      releaseName: policy-controller
+      values: {}
       version: v3
 
   # Destination cluster and namespace to deploy the application
   destination:
     server: {{ .Values.destination.server }}
-    namespace: argocd
+    namespace: cosign-system
 
   # Sync policy
   syncPolicy:

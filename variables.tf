@@ -48,7 +48,7 @@ variable "release_channel" {
 
 variable "gitops_repo" {
   description = "The GitHub repository to use as the source for GitOps"
-  default     = "https://github.com/kameshsampath/go-hello-world-gitops.git"
+  default     = "https://github.com/kameshsampath/go-helloworld-gitops.git"
 }
 
 variable "gitops_repo_revision" {
