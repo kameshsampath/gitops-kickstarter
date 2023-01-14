@@ -30,6 +30,6 @@ output "argocd_admin_password" {
 }
 
 output "argocd_service_url" {
-  value       = "http://${data.kubernetes_service.argocd.status.0.load_balancer.0.ingress.0.ip}"
+  value       = length(data.kubernetes_service.argocd.status) > 0 ? "http://${data.kubernetes_service.argocd.status.0.load_balancer.0.ingress.0.ip}" : "no service available"
   description = "ArgoCD service URL"
 }

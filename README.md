@@ -1,26 +1,29 @@
-# GitOps Go Hello World
+# GitOps Kickstarter
 
-Demo resources to show how to deploy [go-helloworld](https://github.com/kameshsampath/go-hello-world) applying GitOps principles.
+A set of resources, components and scripts to get started with applying GitOps principles.
+
+This kickstart repository resources that will setup the base infrastructure that is needed to get started with GitOps by deploying an ArgoCD base [App of Apps](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#app-of-apps) which deploys,
+
+- [ArgoCD](https://argo-cd.readthedocs.io/) [Image Updater](https://argocd-image-updater.readthedocs.io/en/stable/)
+- [Sigstore](https://sigstore.dev) [Policy Controller](https://github.com/sigstore/policy-controller)
 
 ## Pre-requisites
 
+- [Google Cloud Account](https://cloud.google.com)
 - [terraform](https://terraform.build)
 - [helm](https://helm.sh)
 - [kustomize](https://kustomize.io)
+- [direnv](https://direnv.net) **Optional**
 
 ## Kubernetes Cluster
 
-> **NOTE**: If you already have a Kubernetes Cluster then you can skip this section. 
-
-Running the following terraform script will setup a GKE cluster,
+Running the following command which will setup a GKE cluster using terraform,
 
 ```shell
 make init apply
 ```
 
-### ArgoCD Deployment
-
-The ArgoCD details can be obtained as shown,
+### ArgoCD Deployment Details
 
 #### Admin Password
 
@@ -31,19 +34,19 @@ terraform output -raw argocd_admin_password
 #### ArgoCD Application URL
 
 ```shell
+terraform output -raw argocd_service_url
 ```
 
-## Completed Solution
+## Clean up
 
-The completed Harness Pipelines is available in [.harness](./harness) folder. The folder has the following resources,
+```shell
+make destroy
+```
 
-- [Pipeline](./harness/../.harness/Build_Gitops_Greeter.yaml) - the Pipeline to build and push the application image to container registry of your choice
-- [Input Set::Default](.harness/Default_GitHub_Dev_Builds.yaml) - the Pipeline input set that could be used with Triggers when need to build images on every push to main branch
-- [Input Set::Tags](.harness/Default_GitHub.yaml) - the Pipeline input set that could be used with Triggers when need to build images on every tag
+## Troubleshooting
 
-> IMPORTANT: You may need to update few settings like project, secret, connector names as per your settings or create resources with same name
+- [Cosigned Helm Chart - tls: no certificates configured](https://github.com/sigstore/policy-controller/issues/369)
 
-## Harness Documentation References
-
-- [Webhook Triggers Reference](https://developer.harness.io/docs/platform/pipelines/w_pipeline-steps-reference/triggers-reference/)
-- [Built-in CI Codebase Variables](https://developer.harness.io/docs/continuous-integration/ci-technical-reference/built-in-cie-codebase-variables-reference/)
+```shell
+kubectl delete leases.coordination.k8s.io -n cosign-system --all
+```

@@ -58,5 +58,5 @@ variable "gitops_repo_revision" {
 
 variable "argocd_app_name" {
   description = "The ArgoCD application name for the app of apps"
-  default     = "gitops-demo"
+  default     = "gitops-kickstarter"
 }
