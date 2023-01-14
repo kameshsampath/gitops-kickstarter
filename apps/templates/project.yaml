@@ -70,8 +70,8 @@ spec:
     kind: PersistentVolumeClaim
   - group: ""
     kind: ServiceAccount
-  - group: "policy.sigstore.dev/v1beta1"
-    kind: ClusterImagePolicy
+  - group: policy.sigstore.dev
+    kind: "*"
 
   # Enables namespace orphaned resource monitoring.
   orphanedResources:
