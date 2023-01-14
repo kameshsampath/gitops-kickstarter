@@ -1,4 +1,0 @@
-namespace: harness-gitops
-resources:
-  - namespace.yaml
-  - gitops-agent.yml
