@@ -18,7 +18,6 @@ spec:
 
     helm:
       releaseName: policy-controller
-      values: []
       version: v3
 
   # Destination cluster and namespace to deploy the application
