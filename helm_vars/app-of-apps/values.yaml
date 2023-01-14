@@ -5,6 +5,8 @@ source:
   repoURL: https://github.com/kameshsampath/go-helloworld-gitops.git
   # the branch to use
   targetRevision: main
+sigstore:
+  policyController: 0.3.9
 argocd:
   imageUpdater:
     version: 0.8.1

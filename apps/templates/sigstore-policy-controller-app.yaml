@@ -18,6 +18,7 @@ spec:
 
     helm:
       releaseName: policy-controller
+      targetRevision: {{ .Values.sigstore.policyController.version }}
       version: v3
 
   # Destination cluster and namespace to deploy the application
