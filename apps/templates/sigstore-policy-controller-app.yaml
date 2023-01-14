@@ -13,10 +13,10 @@ spec:
   source:
 
     # Using the Charts Repo
-    repoURL: https://argoproj.github.io/argo-helm
+    repoURL: https://sigstore.github.io/helm-charts
     chart: policy-controller
     targetRevision: {{ .Values.sigstore.policyController.version }}
-    
+
     helm:
       releaseName: policy-controller
       version: v3
