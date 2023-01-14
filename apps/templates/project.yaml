@@ -27,12 +27,21 @@ spec:
   - namespace: cosign-system
     server: {{ .Values.destination.server }}
 
-  # Deny all cluster-scoped resources from being created, except for Namespace
+  # Deny all cluster-scoped resources from being created, except for Namespace,MutatingWebhookConfiguration,ValidatingWebhookConfiguration,ClusterRoleBinding,ClusterRole,CustomResourceDefinition
   clusterResourceWhitelist:
   - group: ''
     kind: Namespace
-  
-  # Allow all namespaced-scoped resources to be created, except for ResourceQuota, LimitRange, NetworkPolicy
+  - group: admissionregistration.k8s.io
+    kind: MutatingWebhookConfiguration
+  - group: admissionregistration.k8s.io
+    kind: ValidatingWebhookConfiguration
+  - group: rbac.authorization.k8s.io
+    kind: ClusterRoleBinding
+  - group: rbac.authorization.k8s.io
+    kind: ClusterRole
+  - group: apiextensions.k8s.io
+    kind: CustomResourceDefinition
+  # Allow all namespaced-scoped resources to be created, except for ResourceQuota, LimitRange, NetworkPolicy,
   namespaceResourceBlacklist:
   - group: ''
     kind: ResourceQuota
