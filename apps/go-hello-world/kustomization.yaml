@@ -1,4 +1,4 @@
 namespace: demo-apps
 
 resources:
-  - ""
+  - "https://github.com/kameshsampath/go-hello-world//config?ref=main"

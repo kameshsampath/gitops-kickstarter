@@ -16,7 +16,7 @@ spec:
     helm:
       releaseName: ${argoAppName}
       valueFiles:
-       - ../helm_vars/app-of-apps/values.yaml
+       - ../../helm_vars/app-of-apps/values.yaml
       version: v3
 
   # Destination cluster and namespace to deploy the application
