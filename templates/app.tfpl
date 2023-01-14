@@ -12,7 +12,7 @@ spec:
   source:
     repoURL: ${gitOpsRepoURL}
     targetRevision:  ${gitopsRepoRevision}
-    path: apps
+    path: apps/base
     helm:
       releaseName: ${argoAppName}
       valueFiles:
