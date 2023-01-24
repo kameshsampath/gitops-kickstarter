@@ -12,16 +12,6 @@ variable "cluster_name" {
   default     = "my-demos"
 }
 
-variable "gke_username" {
-  default     = ""
-  description = "gke username"
-}
-
-variable "gke_password" {
-  default     = ""
-  description = "gke password"
-}
-
 variable "gke_num_nodes" {
   default     = 2
   description = "number of gke nodes"
@@ -48,7 +38,7 @@ variable "release_channel" {
 
 variable "gitops_repo" {
   description = "The GitHub repository to use as the source for GitOps"
-  default     = "https://github.com/kameshsampath/go-helloworld-gitops.git"
+  default     = "https://github.com/kameshsampath/gitops-quickstart.git"
 }
 
 variable "gitops_repo_revision" {
@@ -57,6 +47,10 @@ variable "gitops_repo_revision" {
 }
 
 variable "argocd_app_name" {
-  description = "The ArgoCD application name for the app of apps"
+  description = "The ArgoCD application name for the app of apps. The same will be used as the base project name i.e. the project that houses App of Apps."
   default     = "gitops-kickstarter"
+}
+
+variable "hello_world_image_repo" {
+  description = "The container registry repository where the hello world application will be pushed. e.g. docker.io/kameshsampath/go-hello-world"
 }

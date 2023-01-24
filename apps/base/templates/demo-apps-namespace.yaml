@@ -1,0 +1,9 @@
+{{- if .Values.helloWorld.deploy -}}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: demo-apps
+spec:
+  finalizers:
+  - kubernetes
+{{- end }}

@@ -1,5 +1,7 @@
 project_id         = "REPLACE ME"
 region             = "asia-south1"
-cluster_name       = "kameshs-gitops-kickstarter"
+cluster_name       = "gitops-quickstart"
 kubernetes_version = "1.23."
 release_channel    = "stable"
+gitops_repo        = "https://github.com/kameshsampath/gitops-quickstart.git"
+gitgitops_repo_revision = "main"

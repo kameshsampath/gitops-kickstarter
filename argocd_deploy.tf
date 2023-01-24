@@ -1,11 +1,23 @@
 provider "helm" {
   kubernetes {
-    config_path = "${path.module}/.kube/config"
+    host                   = "https://${google_container_cluster.primary.endpoint}"
+    cluster_ca_certificate = base64decode(google_container_cluster.primary.master_auth[0].cluster_ca_certificate)
+    exec {
+      api_version = "client.authentication.k8s.io/v1beta1"
+      args        = []
+      command     = "gke-gcloud-auth-plugin"
+    }
   }
 }
 
 provider "kubernetes" {
-  config_path = "${path.module}/.kube/config"
+  host                   = "https://${google_container_cluster.primary.endpoint}"
+  cluster_ca_certificate = base64decode(google_container_cluster.primary.master_auth[0].cluster_ca_certificate)
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    args        = []
+    command     = "gke-gcloud-auth-plugin"
+  }
 }
 
 resource "random_password" "argocd_admin_password" {
@@ -18,10 +30,6 @@ resource "random_password" "argocd_admin_password" {
 }
 
 resource "helm_release" "argocd" {
-  depends_on = [
-    google_container_cluster.primary,
-    local_file.kubeconfig
-  ]
   name             = "argocd"
   repository       = "https://argoproj.github.io/argo-helm"
   chart            = "argo-cd"
@@ -37,8 +45,10 @@ resource "helm_release" "argocd" {
   ]
 }
 
-
 data "kubernetes_service" "argocd" {
+  depends_on = [
+    helm_release.argocd
+  ]
   metadata {
     name      = "argocd-server"
     namespace = "argocd"

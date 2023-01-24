@@ -1,30 +1,45 @@
+{{- if .Values.helloWorld.deploy -}}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: sigstore-policy-controller
+  name: hello-world
+  # You'll usually want to add your resources to the argocd namespace.
   namespace: argocd
   # Add this finalizer ONLY if you want these to cascade delete.
   finalizers:
     - resources-finalizer.argocd.argoproj.io
+  # Add labels to your application object.
   labels:
-    name: sigstore-policy-controller
+    name: hello-world
+  annotations:
+    # https://argocd-image-updater.readthedocs.io/en/stable/configuration/applications/
+    # !!!IMPORTANT!!!: 
+    # -  update the repository to match your Repo docker.io/kameshsampath/ go-hello-world:latest could be replaced with image pointing to the image you want to set typically to your image repository e.g. quay.io/foo/bar
+    #  - ensure the alias hwimage is used in all annotations to replace the right image
+    argocd-image-updater.argoproj.io/image-list: hwimage={{ .Values.helloWorld.image.repo }}
+    # the orignal image name in https://github.com/kameshsampath/go-hello-world/blob/main/config/deployment.yaml#L17. No need to change this.
+    argocd-image-updater.argoproj.io/hwimage.kustomize.image-name: ghcr.io/kameshsampath/go-hello-world
+    # use semantic versioning for new image updates. https://semver.org/
+    argocd-image-updater.argoproj.io/hwimage.update-strategy: digest
+    # froce update deployment where the image is not updated your image repo
+    argocd-image-updater.argoproj.io/hwimage.force-update: "true"
 spec:
-  project: {{ .Values.baseProjectName }}
+  # The project the application belongs to.
+  project: hello-worlds
+
+  # Source of the application manifests
   source:
-
-    # Using the Charts Repo
-    repoURL: https://sigstore.github.io/helm-charts
-    chart: policy-controller
-    targetRevision: {{ .Values.sigstore.policyController.version }}
-
-    helm:
-      releaseName: policy-controller
-      version: v3
+    repoURL: {{.Values.source.repoURL}}
+    targetRevision: main
+    path: apps/go-helloworld
+    # kustomize specific config
+    kustomize: {}
 
   # Destination cluster and namespace to deploy the application
   destination:
-    server: {{ .Values.destination.server }}
-    namespace: cosign-system
+    server: https://kubernetes.default.svc
+    # The namespace will only be set for namespace-scoped resources that have not set a value for .metadata.namespace
+    namespace: demo-apps
 
   # Sync policy
   syncPolicy:
@@ -58,3 +73,10 @@ spec:
     kind: "*"
     managedFieldsManagers:
     - kube-controller-manager
+
+  # RevisionHistoryLimit limits the number of items kept in the application's revision history, which is used for
+  # informational purposes as well as for rollbacks to previous versions. This should only be changed in exceptional
+  # circumstances. Setting to zero will store no history. This will reduce storage used. Increasing will increase the
+  # space used to store the history, so we do not recommend increasing it.
+  revisionHistoryLimit: 10
+{{- end }}
