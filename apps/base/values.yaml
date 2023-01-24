@@ -10,6 +10,10 @@ source:
   repoURL:
   # The branch/tag to use for the source repo
   targetRevision: main
+# jetstack cert manager version
+jetstack:
+  certManager:
+    version: v1.11.0
 # the sigstore settings
 sigstore:
   policyController:
